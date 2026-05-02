@@ -21,7 +21,7 @@ public class Usuario {
     @NotBlank(message = "El nombre no puede estar vacio")
     private String nombre;
 
-    @Column(nullable = false, length = 100)
+    @Column(unique = true, length = 100)
     @NotBlank(message = "El gmail del usuario no puede estar vacio")
     private String gmail;
 
