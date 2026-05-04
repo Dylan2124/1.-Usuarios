@@ -32,15 +32,4 @@ public interface UsuarioRepository extends JpaRepository<Usuario,Long> {
     List<Usuario> filtrarUsuarioPorGmail(@Param("gmail") String gmail);
 
 
-
-
-
-
-
-
-
-
-
-
-
 }
