@@ -26,7 +26,6 @@ public class Usuario {
     private String rol; // Administrador, tecnico, cliente.
 
     @Column(nullable = false, length = 100)
-   // @Size(min = 8, max = 8, message = "La contraseña solo puede tener 8 caracteres ")
     private String contrasena;
 
 

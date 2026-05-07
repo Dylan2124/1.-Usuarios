@@ -12,5 +12,4 @@ public class UsuarioResponseDTO {
     private String nombre;
     private String gmail;
     private String rol;
-    private String contrasena;
 }
