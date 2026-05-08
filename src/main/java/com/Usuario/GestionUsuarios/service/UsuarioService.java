@@ -77,6 +77,11 @@ public class UsuarioService {
 
 
     // Actualizar por id
+    public Optional<UsuarioResponseDTO> acualizar(Long id, UsuarioRequestDTO dto){
+        return usuarioRepository.findById(id).map(existente ->{
+
+        })
+    }
 
     // eliminar por id
 
