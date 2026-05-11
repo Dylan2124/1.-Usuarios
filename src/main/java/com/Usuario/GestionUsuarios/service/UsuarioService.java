@@ -23,9 +23,16 @@ public class UsuarioService {
                 usuario.getId(),
                 usuario.getNombre(),
                 usuario.getGmail(),
-                usuario.getRol(),
-                usuario.getContrasena()
+                usuario.getRol()
+                // No se llama a la contrasena por temas de seguridad para el usuario.
         );
+    }
+
+    // Obtener por id
+    public Optional<UsuarioResponseDTO> obtenerPorId(Long id){
+        return usuarioRepository.findById(id)
+                .map(this::mapToDTO);
+
     }
 
     // Obtener todos los usuarios.
@@ -35,10 +42,6 @@ public class UsuarioService {
                 .map(this::mapToDTO)
                 .collect(Collectors.toList());
 
-    }
-    // Buscar usuario por id
-    public Optional<UsuarioResponseDTO> obtenerPorId(Long id){
-        return usuarioRepository.findById(id).map(this::mapToDTO);
     }
 
     // Agregar usuario
@@ -61,25 +64,70 @@ public class UsuarioService {
     }
 
     //auntenticar usuario por gmail
-    public Optional<UsuarioResponseDTO> obtenerPorGmail(String gmail){
-        log.info("Buscando por el correo: {} ",gmail);
+    public Optional<UsuarioResponseDTO> autenticar(String gmail,String contrasena){
+        log.info("Intento de login para usuario: {} ",gmail);
         return usuarioRepository.encontrarParaAutenticacion(gmail)
+                .filter(u -> u.getContrasena().equals(contrasena))
                 .map(this::mapToDTO);
-
-
     }
 
 
     // Actualizar por id
+    public Optional<UsuarioResponseDTO> actulizar(Long id, UsuarioRequestDTO dto) {
+        log.info("Iniciando actualizacion del ususario con ID: {}", id);
+        return usuarioRepository.findById(id).map(existente -> {
+            existente.setNombre(dto.getNombre());
+            existente.setGmail(dto.getGmail());
+            existente.setRol(dto.getRol());
+            // Actulizacion de la contraseña
+            existente.setContrasena(dto.getContrasena());
+
+            Usuario actualizado = usuarioRepository.save(existente);
+            log.info("Usuario ID {} guardado", actualizado.getId());
+            return mapToDTO(actualizado);
+        });
+    }
 
     // eliminar por id
 
-    // Listar usuario por rol?
+    public void eliminar(Long id){
+        log.info("Eliminando el usuario ID: {}",id);
+        if(usuarioRepository.existsById(id)){
+            usuarioRepository.deleteById(id);
+        }else{
+            throw new RuntimeException("Usuario no encontrado");
+        }
+    }
+    // Listar usuario por rol
+    public List<UsuarioResponseDTO> listarPorRol (String rol) {
+        log.info("Buscando lista de usuarios por su rol: {} ", rol);
+        return usuarioRepository.buscarPorRol(rol)
+                .stream()
+                .map(this::mapToDTO)
+                .collect(Collectors.toList());
+    }
 
+    // Buscar por gmail
+    public List<UsuarioResponseDTO> filtrarPorGmail(String gmail){
+        log.info("Filtrando usuario por gmail: {}",gmail);
+        return usuarioRepository.filtrarUsuarioPorGmail(gmail)
+                .stream()
+                .map(this::mapToDTO)
+                .collect(Collectors.toList());
+    }
 
+    // Buscar los usuario tecnicos
+    public List<UsuarioResponseDTO> listarTecnicos(){
+        log.info("Consultando lista de tecnioc de ensamblaje disponible");
+        return  usuarioRepository.listarTecnicosDisponible()
+                .stream()
+                .map(this::mapToDTO)
+                .collect(Collectors.toList());
+    }
 
 
 
 
 
 }
+

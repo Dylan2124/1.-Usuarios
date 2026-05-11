@@ -25,7 +25,7 @@ public class Usuario {
     @Column(nullable = false, length = 100)
     private String rol; // Administrador, tecnico, cliente.
 
-    @Column(nullable = false, length = 100)
+    @Column(nullable = false, length = 255)
     private String contrasena;
 
 
