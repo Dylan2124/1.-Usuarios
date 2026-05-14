@@ -6,6 +6,8 @@ import com.Usuario.GestionUsuarios.model.Usuario;
 import com.Usuario.GestionUsuarios.repository.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,6 +19,7 @@ import java.util.stream.Collectors;
 public class UsuarioService {
 
     private final UsuarioRepository usuarioRepository;
+    private final BCryptPasswordEncoder passwordEncoder;
 
     private UsuarioResponseDTO mapToDTO(Usuario usuario){
         return new UsuarioResponseDTO(
@@ -48,16 +51,18 @@ public class UsuarioService {
     public UsuarioResponseDTO registrarUsuario(UsuarioRequestDTO dto){
         log.info("Iniciando registros de nuevo usuario: {}",dto.getNombre());
         if (usuarioRepository.existsByGmail(dto.getGmail())){
-            log.error("El gmail ya esta registrado");
-            throw new RuntimeException("El correo exite");
+            log.error("Usuario ya registrado");
+            throw new RuntimeException("El correo ya esta registrado");
         }
 
         Usuario usuario = new Usuario();
         usuario.setNombre(dto.getNombre());
         usuario.setGmail(dto.getGmail());
         usuario.setRol(dto.getRol());
-        usuario.setContrasena(dto.getContrasena());
-
+        //Encriptacion de la contraseña
+        // Ver en config
+        String contraseñaEncriptada = passwordEncoder.encode(dto.getContrasena());
+        usuario.setContrasena(contraseñaEncriptada);
         usuario = usuarioRepository.save(usuario);
         log.info("Usuario creado con exitosamente con ID: {}",usuario.getId());
         return  mapToDTO(usuario);
@@ -67,10 +72,10 @@ public class UsuarioService {
     public Optional<UsuarioResponseDTO> autenticar(String gmail,String contrasena){
         log.info("Intento de login para usuario: {} ",gmail);
         return usuarioRepository.encontrarParaAutenticacion(gmail)
-                .filter(u -> u.getContrasena().equals(contrasena))
+                // Comparacion de contraseñas
+                .filter(u ->passwordEncoder.matches(contrasena, u.getContrasena()))
                 .map(this::mapToDTO);
     }
-
 
     // Actualizar por id
     public Optional<UsuarioResponseDTO> actulizar(Long id, UsuarioRequestDTO dto) {
@@ -80,16 +85,17 @@ public class UsuarioService {
             existente.setGmail(dto.getGmail());
             existente.setRol(dto.getRol());
             // Actulizacion de la contraseña
-            existente.setContrasena(dto.getContrasena());
-
+            if (dto.getContrasena() != null && !dto.getContrasena().isEmpty()){
+                existente.setContrasena(passwordEncoder.encode(dto.getContrasena()));
+            }
             Usuario actualizado = usuarioRepository.save(existente);
-            log.info("Usuario ID {} guardado", actualizado.getId());
-            return mapToDTO(actualizado);
+            log.info("Usuario ID {} actualizado exitosamente",actualizado.getId());
+            return  mapToDTO(actualizado);
+
         });
     }
 
     // eliminar por id
-
     public void eliminar(Long id){
         log.info("Eliminando el usuario ID: {}",id);
         if(usuarioRepository.existsById(id)){
@@ -98,6 +104,7 @@ public class UsuarioService {
             throw new RuntimeException("Usuario no encontrado");
         }
     }
+
     // Listar usuario por rol
     public List<UsuarioResponseDTO> listarPorRol (String rol) {
         log.info("Buscando lista de usuarios por su rol: {} ", rol);

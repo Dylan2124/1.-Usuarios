@@ -28,7 +28,7 @@ public interface UsuarioRepository extends JpaRepository<Usuario,Long> {
     @Query("SELECT u FROM Usuario u WHERE u.rol = 'Tecnico de Emsamblaje' ORDER BY u.nombre ASC")
     List<Usuario> listarTecnicosDisponible();
 
-    @Query(value = "SELECT * FROM Usuario WHERE gmail LIKE %:gmail%", nativeQuery = true)
+    @Query(value = "SELECT * FROM usuarios WHERE gmail LIKE %:gmail%", nativeQuery = true)
     List<Usuario> filtrarUsuarioPorGmail(@Param("gmail") String gmail);
 
 

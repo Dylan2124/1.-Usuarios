@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/usuario")
+@RequestMapping("/api/usuario")
 @RequiredArgsConstructor
 public class UsuarioController {
 
@@ -50,7 +50,7 @@ public class UsuarioController {
         return ResponseEntity.noContent().build(); // 204
     }
 
-    @GetMapping("/gmail/{gmail}")
+    @PostMapping("/login")
     public ResponseEntity<UsuarioResponseDTO> autenticar(@PathVariable String gmail, String contrasena) {
         return usuarioService.autenticar(gmail,contrasena)
                 .map(ResponseEntity::ok)

@@ -20,11 +20,11 @@ public class DataInitializer implements CommandLineRunner {
             log.info(">>> Base de datos de usuarios ya tiene datos. Omitiendo inicializacion");
             return;
         }
-        log.info(">>> Cangando usuario y roles iniciales para la Plataforma de Hardware.");
+        log.info(">>> Cargando usuario y roles iniciales para la Plataforma de Hardware.");
 
         repository.save(new Usuario(null,"Juan torres","admin@hardware.cl","Admin del sistema","admin123"));
         repository.save(new Usuario(null,"Felipe contreras","felipe.ensamblaje@hardware.cl","Tecnico de ensamblaje","tec12345"));
-        repository.save(new Usuario(null,"Diego ","diego@gmail.cl","Cliente","cliente1234"));
+        repository.save(new Usuario(null,"Diego ","diego@gmail.cl","Cliente","cliente1"));
 
 
     }

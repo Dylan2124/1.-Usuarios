@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Usuario {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -27,10 +28,4 @@ public class Usuario {
 
     @Column(nullable = false, length = 255)
     private String contrasena;
-
-
-
-
-
-
 }
