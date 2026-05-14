@@ -132,6 +132,28 @@ public class UsuarioService {
                 .collect(Collectors.toList());
     }
 
+    public List<UsuarioResponseDTO> optenerPorNombre(String nombre){
+        return usuarioRepository.findByNombreContainingIgnoreCase(nombre)
+                .stream()
+                .map(this::mapToDTO)
+                .collect(Collectors.toList());
+    }
+
+    public List<UsuarioResponseDTO> optenerPorRol(String rol){
+        return usuarioRepository.findByRolContainingIgnoreCase(rol)
+                .stream()
+                .map(this::mapToDTO)
+                .collect(Collectors.toList());
+    }
+
+    public List<UsuarioResponseDTO> optenerPorGmail(String gmail){
+        return usuarioRepository.findByGmailContainingIgnoreCase(gmail)
+                .stream()
+                .map(this::mapToDTO)
+                .collect(Collectors.toList());
+
+    }
+
 
 
 
