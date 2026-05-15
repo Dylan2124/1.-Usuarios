@@ -12,4 +12,5 @@ public class UsuarioResponseDTO {
     private String nombre;
     private String gmail;
     private String rol;
+    // Sin contraseña por motivos de seguridad
 }

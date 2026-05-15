@@ -16,7 +16,7 @@ public class UsuarioRequestDTO {
     private String nombre;
 
     @Email
-    @NotBlank(message = "El gmail no puede estar vacio")
+    @NotBlank(message = "El correo (gmail) no puede estar vacio ")
     private String gmail;
 
     @NotBlank(message = "El rol del usuario no puede estar vacio.")

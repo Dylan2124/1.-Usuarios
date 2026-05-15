@@ -27,10 +27,10 @@ public interface UsuarioRepository extends JpaRepository<Usuario,Long> {
     Optional<Usuario> encontrarParaAutenticacion(@Param("gmail") String gmail);
 
     // Buscar al tecnico
-    @Query("SELECT u FROM Usuario u WHERE u.rol = 'Tecnico de Emsamblaje' ORDER BY u.nombre ASC")
+    @Query("SELECT u FROM Usuario u WHERE u.rol = 'Tecnico de Ensamblaje' ORDER BY u.nombre ASC")
     List<Usuario> listarTecnicosDisponible();
 
-    @Query(value = "SELECT * FROM usuarios WHERE gmail LIKE %:gmail%", nativeQuery = true)
+    @Query(value = "SELECT * FROM usuarios WHERE gmail LIKE CONCAT( '%':gmail, '%')", nativeQuery = true)
     List<Usuario> filtrarUsuarioPorGmail(@Param("gmail") String gmail);
 
 

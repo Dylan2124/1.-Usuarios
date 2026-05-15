@@ -14,18 +14,19 @@ import lombok.NoArgsConstructor;
 public class Usuario {
 
     @Id
+    @Column(name = "id_usuario")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, length = 100)
+    @Column(name = "nombre_completo",nullable = false, length = 100)
     private String nombre;
 
-    @Column(unique = true, length = 100)
+    @Column(name = "gmail",unique = true, length = 100)
     private String gmail;
 
     @Column(nullable = false, length = 100)
     private String rol; // Administrador, tecnico, cliente.
 
-    @Column(nullable = false, length = 255)
+    @Column(name = "password",nullable = false, length = 255)
     private String contrasena;
 }

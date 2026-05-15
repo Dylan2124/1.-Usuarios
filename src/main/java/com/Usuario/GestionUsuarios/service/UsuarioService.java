@@ -7,7 +7,6 @@ import com.Usuario.GestionUsuarios.repository.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -27,7 +26,7 @@ public class UsuarioService {
                 usuario.getNombre(),
                 usuario.getGmail(),
                 usuario.getRol()
-                // No se llama a la contrasena por temas de seguridad para el usuario.
+                // No se llama a la contrasena en el dto de repuesta por seguridad.
         );
     }
 
@@ -50,22 +49,24 @@ public class UsuarioService {
     // Agregar usuario
     public UsuarioResponseDTO registrarUsuario(UsuarioRequestDTO dto){
         log.info("Iniciando registros de nuevo usuario: {}",dto.getNombre());
-        if (usuarioRepository.existsByGmail(dto.getGmail())){
-            log.error("Usuario ya registrado");
-            throw new RuntimeException("El correo ya esta registrado");
-        }
 
         Usuario usuario = new Usuario();
         usuario.setNombre(dto.getNombre());
         usuario.setGmail(dto.getGmail());
         usuario.setRol(dto.getRol());
         //Encriptacion de la contraseña
-        // Ver en config
-        String contraseñaEncriptada = passwordEncoder.encode(dto.getContrasena());
-        usuario.setContrasena(contraseñaEncriptada);
-        usuario = usuarioRepository.save(usuario);
-        log.info("Usuario creado con exitosamente con ID: {}",usuario.getId());
-        return  mapToDTO(usuario);
+
+        String contrasenaEncriptada = passwordEncoder.encode(dto.getContrasena());
+        usuario.setContrasena(contrasenaEncriptada);
+        Usuario usuarioGuardado = usuarioRepository.save(usuario);
+        log.info("Usuario {} guardado",dto.getNombre());
+        return new UsuarioResponseDTO(
+                usuarioGuardado.getId(),
+                usuarioGuardado.getNombre(),
+                usuarioGuardado.getGmail(),
+                usuarioGuardado.getRol()
+        );
+
     }
 
     //auntenticar usuario por gmail
@@ -78,12 +79,13 @@ public class UsuarioService {
     }
 
     // Actualizar por id
-    public Optional<UsuarioResponseDTO> actulizar(Long id, UsuarioRequestDTO dto) {
+    public Optional<UsuarioResponseDTO> actualizar(Long id, UsuarioRequestDTO dto) {
         log.info("Iniciando actualizacion del ususario con ID: {}", id);
         return usuarioRepository.findById(id).map(existente -> {
             existente.setNombre(dto.getNombre());
             existente.setGmail(dto.getGmail());
             existente.setRol(dto.getRol());
+
             // Actulizacion de la contraseña
             if (dto.getContrasena() != null && !dto.getContrasena().isEmpty()){
                 existente.setContrasena(passwordEncoder.encode(dto.getContrasena()));
@@ -132,31 +134,27 @@ public class UsuarioService {
                 .collect(Collectors.toList());
     }
 
-    public List<UsuarioResponseDTO> optenerPorNombre(String nombre){
+    public List<UsuarioResponseDTO> obtenerPorNombre(String nombre){
         return usuarioRepository.findByNombreContainingIgnoreCase(nombre)
                 .stream()
                 .map(this::mapToDTO)
                 .collect(Collectors.toList());
     }
 
-    public List<UsuarioResponseDTO> optenerPorRol(String rol){
+    public List<UsuarioResponseDTO> obtenerPorRol(String rol){
         return usuarioRepository.findByRolContainingIgnoreCase(rol)
                 .stream()
                 .map(this::mapToDTO)
                 .collect(Collectors.toList());
     }
 
-    public List<UsuarioResponseDTO> optenerPorGmail(String gmail){
+    public List<UsuarioResponseDTO> obtenerPorGmail(String gmail){
         return usuarioRepository.findByGmailContainingIgnoreCase(gmail)
                 .stream()
                 .map(this::mapToDTO)
                 .collect(Collectors.toList());
 
     }
-
-
-
-
 
 }
 
