@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/usuario")
@@ -53,10 +54,10 @@ public class UsuarioController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<UsuarioResponseDTO> autenticar(@RequestBody String gmail, String contrasena) {
-        return usuarioService.autenticar(gmail,contrasena)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build()); //Error 404
+    public ResponseEntity<UsuarioResponseDTO> autenticar(@RequestBody UsuarioRequestDTO credenciales) {
+                return usuarioService.autenticar(credenciales.getGmail(),credenciales.getContrasena())
+                        .map(ResponseEntity::ok)
+                        .orElse(ResponseEntity.status(HttpStatus.UNAUTHORIZED).build());
     }
 
     @GetMapping("/rol/{rol}")
@@ -65,8 +66,8 @@ public class UsuarioController {
         return ResponseEntity.ok(usuario);
     }
 
-    @GetMapping("/buscar")
-    public ResponseEntity<List<UsuarioResponseDTO>> filtrarPorGmail(@RequestParam String gmail){
+    @GetMapping("/gmail/{gmail}")
+    public ResponseEntity<List<UsuarioResponseDTO>> filtrarPorGmail(@PathVariable String gmail){
         List<UsuarioResponseDTO> usuario = usuarioService.filtrarPorGmail(gmail);
         return ResponseEntity.ok(usuario);
     }

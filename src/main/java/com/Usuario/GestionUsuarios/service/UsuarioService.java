@@ -48,8 +48,6 @@ public class UsuarioService {
 
     // Agregar usuario
     public UsuarioResponseDTO registrarUsuario(UsuarioRequestDTO dto){
-        log.info("Iniciando registros de nuevo usuario: {}",dto.getNombre());
-
         Usuario usuario = new Usuario();
         usuario.setNombre(dto.getNombre());
         usuario.setGmail(dto.getGmail());
@@ -59,7 +57,6 @@ public class UsuarioService {
         String contrasenaEncriptada = passwordEncoder.encode(dto.getContrasena());
         usuario.setContrasena(contrasenaEncriptada);
         Usuario usuarioGuardado = usuarioRepository.save(usuario);
-        log.info("Usuario {} guardado",dto.getNombre());
         return new UsuarioResponseDTO(
                 usuarioGuardado.getId(),
                 usuarioGuardado.getNombre(),
@@ -71,7 +68,6 @@ public class UsuarioService {
 
     //auntenticar usuario por gmail
     public Optional<UsuarioResponseDTO> autenticar(String gmail,String contrasena){
-        log.info("Intento de login para usuario: {} ",gmail);
         return usuarioRepository.encontrarParaAutenticacion(gmail)
                 // Comparacion de contraseñas
                 .filter(u ->passwordEncoder.matches(contrasena, u.getContrasena()))
@@ -80,7 +76,6 @@ public class UsuarioService {
 
     // Actualizar por id
     public Optional<UsuarioResponseDTO> actualizar(Long id, UsuarioRequestDTO dto) {
-        log.info("Iniciando actualizacion del ususario con ID: {}", id);
         return usuarioRepository.findById(id).map(existente -> {
             existente.setNombre(dto.getNombre());
             existente.setGmail(dto.getGmail());
@@ -91,7 +86,6 @@ public class UsuarioService {
                 existente.setContrasena(passwordEncoder.encode(dto.getContrasena()));
             }
             Usuario actualizado = usuarioRepository.save(existente);
-            log.info("Usuario ID {} actualizado exitosamente",actualizado.getId());
             return  mapToDTO(actualizado);
 
         });
@@ -99,7 +93,6 @@ public class UsuarioService {
 
     // eliminar por id
     public void eliminar(Long id){
-        log.info("Eliminando el usuario ID: {}",id);
         if(usuarioRepository.existsById(id)){
             usuarioRepository.deleteById(id);
         }else{
@@ -109,7 +102,6 @@ public class UsuarioService {
 
     // Listar usuario por rol
     public List<UsuarioResponseDTO> listarPorRol (String rol) {
-        log.info("Buscando lista de usuarios por su rol: {} ", rol);
         return usuarioRepository.buscarPorRol(rol)
                 .stream()
                 .map(this::mapToDTO)
@@ -118,7 +110,6 @@ public class UsuarioService {
 
     // Buscar por gmail
     public List<UsuarioResponseDTO> filtrarPorGmail(String gmail){
-        log.info("Filtrando usuario por gmail: {}",gmail);
         return usuarioRepository.filtrarUsuarioPorGmail(gmail)
                 .stream()
                 .map(this::mapToDTO)
@@ -127,7 +118,6 @@ public class UsuarioService {
 
     // Buscar los usuario tecnicos
     public List<UsuarioResponseDTO> listarTecnicos(){
-        log.info("Consultando lista de tecnioc de ensamblaje disponible");
         return  usuarioRepository.listarTecnicosDisponible()
                 .stream()
                 .map(this::mapToDTO)

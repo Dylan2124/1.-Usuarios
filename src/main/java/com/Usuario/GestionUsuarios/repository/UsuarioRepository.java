@@ -30,8 +30,7 @@ public interface UsuarioRepository extends JpaRepository<Usuario,Long> {
     @Query("SELECT u FROM Usuario u WHERE u.rol = 'Tecnico de Ensamblaje' ORDER BY u.nombre ASC")
     List<Usuario> listarTecnicosDisponible();
 
-    @Query(value = "SELECT * FROM usuarios WHERE gmail LIKE CONCAT( '%':gmail, '%')", nativeQuery = true)
+    @Query(value = "SELECT * FROM usuarios WHERE gmail LIKE CONCAT('%', :gmail, '%')", nativeQuery = true)
     List<Usuario> filtrarUsuarioPorGmail(@Param("gmail") String gmail);
-
 
 }
