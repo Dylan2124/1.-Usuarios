@@ -3,18 +3,20 @@ package com.Usuario.GestionUsuarios.Controller;
 import com.Usuario.GestionUsuarios.dto.UsuarioRequestDTO;
 import com.Usuario.GestionUsuarios.dto.UsuarioResponseDTO;
 import com.Usuario.GestionUsuarios.service.UsuarioService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
-import java.util.Map;
 
+//Evalucion 3:
+// Anotaciones : @Tag, @Operation, @ApiResponse
 @RestController
 @RequestMapping("/api/usuario")
 @RequiredArgsConstructor
+@Tag(name = "Gestion de Usuarios",description = "Endpoint para la CRUD de usuarios, autenticacion y filtro de roles.")
 public class UsuarioController {
 
     private final UsuarioService usuarioService;
