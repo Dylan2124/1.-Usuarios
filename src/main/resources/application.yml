@@ -1,0 +1,19 @@
+<¡-- -->
+spring:
+    application:
+        name: GestionUsuario
+    datasource:
+        url: jdbc:mysql://localhost:3306/usuario_db
+        username: root
+        password: ""
+        driver-class-name: com.mysql.cj.jdbc.Driver
+    jpa:
+        database-platform: org.hibernate.dialect.MySQLDialect
+        hivernate:
+            ddl-auto: update
+        properties:
+            hivernate:
+                format_sql: true
+server:
+    port: 8081
+    

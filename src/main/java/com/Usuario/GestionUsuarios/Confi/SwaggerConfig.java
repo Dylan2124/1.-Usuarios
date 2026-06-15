@@ -15,6 +15,6 @@ public class SwaggerConfig {
                 .info(new Info()
                         .title("API de Microservisio de Usuario")
                         .description("Documentacion para la gestion de usuarios, credenciales y roles")
-                        .version("1.0"));
+                        .version("1.0.0"));
     }
 }
