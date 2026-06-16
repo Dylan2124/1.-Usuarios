@@ -24,8 +24,9 @@ public class Usuario {
     @Column(name = "gmail",unique = true, length = 100)
     private String gmail;
 
-    @Column(nullable = false, length = 100)
-    private String rol; // Administrador, tecnico, cliente.
+    @Enumerated(EnumType.STRING)
+    @Column(name = "rol", nullable = false, length = 20)
+    private Rol rol; // ADMINISTRADOR, TECNICO, USUARIO
 
     @Column(name = "password",nullable = false, length = 255)
     private String contrasena;

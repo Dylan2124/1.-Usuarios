@@ -1,6 +1,7 @@
 package com.Usuario.GestionUsuarios.repository;
 
 import com.Usuario.GestionUsuarios.model.Usuario;
+import com.Usuario.GestionUsuarios.model.Rol;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -14,20 +15,21 @@ public interface UsuarioRepository extends JpaRepository<Usuario,Long> {
 
     List<Usuario> findByNombreContainingIgnoreCase(String nombre);
 
-    List<Usuario> findByRolContainingIgnoreCase(String rol);
+    // Buscar por igualdad de enum Rol
+    List<Usuario> findByRol(Rol rol);
 
     List<Usuario> findByGmailContainingIgnoreCase(String gmail);
     Boolean existsByGmail(String gmail);
 
     // Buscar rol de los usuario que pertenese a un rol especifico
-    @Query("SELECT u FROM Usuario u WHERE u.rol = :rol ")
-    List<Usuario> buscarPorRol(@Param("rol")String rol);
+    @Query("SELECT u FROM Usuario u WHERE u.rol = :rol")
+    List<Usuario> buscarPorRol(@Param("rol") Rol rol);
 
     @Query("SELECT u FROM Usuario u WHERE u.gmail = :gmail")
     Optional<Usuario> encontrarParaAutenticacion(@Param("gmail") String gmail);
 
-    // Buscar al tecnico
-    @Query("SELECT u FROM Usuario u WHERE u.rol = 'Tecnico de Ensamblaje' ORDER BY u.nombre ASC")
+    // Buscar al tecnico (usando el enum)
+    @Query("SELECT u FROM Usuario u WHERE u.rol = com.Usuario.GestionUsuarios.model.Rol.TECNICO ORDER BY u.nombre ASC")
     List<Usuario> listarTecnicosDisponible();
 
     @Query(value = "SELECT * FROM usuarios WHERE gmail LIKE CONCAT('%', :gmail, '%')", nativeQuery = true)
