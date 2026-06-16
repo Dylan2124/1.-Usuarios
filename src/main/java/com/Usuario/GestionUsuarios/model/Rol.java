@@ -17,6 +17,6 @@ public enum Rol {
 
     // Devuelve el nombre del enum (ADMINISTRADOR, TECNICO, USUARIO)
     public String getEnumName() {
-        return this.name();
+        return this.name();//dasd
     }
 }
