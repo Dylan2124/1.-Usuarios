@@ -22,7 +22,7 @@ import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@SpringBootTest
+@SpringBootTest(properties = {"eureka.client.enabled=false", "spring.cloud.discovery.enabled=false"})
 @org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc
 @DisplayName("Pruebas del Controlador de Usuarios")
 class UsuarioControllerTest {
