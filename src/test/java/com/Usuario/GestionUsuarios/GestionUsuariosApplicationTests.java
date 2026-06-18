@@ -18,11 +18,6 @@ class GestionUsuariosApplicationTests {
 	@Mock
 	private UsuarioRepository usuarioRepository;
 
-	@InjectMocks
-	private UsuarioService
 
-	@Test
-	void contextLoads() {
-	}
 
 }

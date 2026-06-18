@@ -1,7 +1,6 @@
-<¡-- -->
 spring:
     application:
-        name: GestionUsuario
+        name: ms-usuarios  #Nombre del microservicio
     datasource:
         url: jdbc:mysql://localhost:3306/usuario_db
         username: root
@@ -9,11 +8,45 @@ spring:
         driver-class-name: com.mysql.cj.jdbc.Driver
     jpa:
         database-platform: org.hibernate.dialect.MySQLDialect
-        hivernate:
+        hibernate:
             ddl-auto: update
         properties:
-            hivernate:
+            hibernate:
                 format_sql: true
+        show-sql: false
+
 server:
     port: 8081
+
+# ========== CONFIGURACIÓN EUREKA ==========
+eureka:
+    client:
+        serviceUrl:
+            defaultZone: http://localhost:8761/eureka/  # URL del Servidor Eureka
+        register-with-eureka: true
+        fetch-registry: true
+    instance:
+        instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
+        hostname: localhost
+        prefer-ip-address: false
+        health-check-url: http://localhost:8081/actuator/health
+        status-page-url: http://localhost:8081/actuator/info
+
+# ========== ACTUATOR (Para Health Check) ==========
+management:
+    endpoints:
+        web:
+            exposure:
+                include: health,info,metrics
+    endpoint:
+        health:
+            show-details: always
+
+# ========== LOGGING ==========
+logging:
+    level:
+        root: INFO
+        com.Usuario.GestionUsuarios: DEBUG
+        org.springframework.web: DEBUG
+        org.springframework.security: DEBUG
     
