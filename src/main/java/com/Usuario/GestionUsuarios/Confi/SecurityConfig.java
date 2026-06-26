@@ -19,19 +19,24 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
-    //filtro para Postman
+    //filtro para Postman / Swagger
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/swagger-ui.html").permitAll()
                         .requestMatchers("/api/usuario/login").permitAll()
+                        // Permisos para el CRUD completo de usuarios:
                         .requestMatchers(HttpMethod.POST, "/api/usuario").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/usuario/**").permitAll()
-                        .anyRequest().authenticated()
+                        .requestMatchers(HttpMethod.PUT, "/api/usuario/**").permitAll()
+                        .requestMatchers(HttpMethod.DELETE, "/api/usuario/**").permitAll()
+                        .requestMatchers("/api/usuario/**").permitAll()
+                        .requestMatchers("/api/usuarios/**", "/api/usuarios").permitAll()
 
+                        .anyRequest().authenticated()
                 );
         return http.build();
     }
 }
-

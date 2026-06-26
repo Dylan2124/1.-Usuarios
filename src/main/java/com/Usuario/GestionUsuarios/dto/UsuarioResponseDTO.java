@@ -1,12 +1,11 @@
 package com.Usuario.GestionUsuarios.dto;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.hateoas.RepresentationModel;
-
+import org.springframework.hateoas.RepresentationModel; // <-- IMPORTANTE
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -20,7 +19,6 @@ public class UsuarioResponseDTO extends RepresentationModel<UsuarioResponseDTO> 
             example = "1",
             accessMode = Schema.AccessMode.READ_ONLY
     )
-    @JsonProperty("id")
     private Long id;
 
     @Schema(
@@ -28,7 +26,6 @@ public class UsuarioResponseDTO extends RepresentationModel<UsuarioResponseDTO> 
             example = "Juan Pérez García",
             requiredMode = Schema.RequiredMode.REQUIRED
     )
-    @JsonProperty("nombre")
     private String nombre;
 
     @Schema(
@@ -36,7 +33,6 @@ public class UsuarioResponseDTO extends RepresentationModel<UsuarioResponseDTO> 
             example = "juan.perez@example.com",
             requiredMode = Schema.RequiredMode.REQUIRED
     )
-    @JsonProperty("gmail")
     private String gmail;
 
     @Schema(
@@ -45,6 +41,5 @@ public class UsuarioResponseDTO extends RepresentationModel<UsuarioResponseDTO> 
             allowableValues = {"ADMINISTRADOR", "TECNICO", "USUARIO"},
             requiredMode = Schema.RequiredMode.REQUIRED
     )
-    @JsonProperty("rol")
     private String rol;
 }

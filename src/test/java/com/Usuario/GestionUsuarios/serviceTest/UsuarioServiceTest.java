@@ -119,43 +119,6 @@ class UsuarioServiceTest {
     }
 
     @Test
-    @DisplayName("Debe autenticar un usuario con credenciales correctas")
-    void testAutenticar_Success() {
-        // ARRANGE
-        String contrasenaEncriptada = "MiCont45_Encriptada";
-        usuarioMock.setContrasena(contrasenaEncriptada);
-
-        when(usuarioRepository.encontrarParaAutenticacion("juan@example.com"))
-                .thenReturn(Optional.of(usuarioMock));
-        when(passwordEncoder.matches("MiCont45", contrasenaEncriptada))
-                .thenReturn(true);
-
-        // ACT
-        Optional<UsuarioResponseDTO> resultado = usuarioService.autenticar("juan@example.com", "MiCont45");
-
-        // ASSERT
-        assertTrue(resultado.isPresent());
-        assertEquals("Juan Pérez", resultado.get().getNombre());
-        verify(usuarioRepository, times(1)).encontrarParaAutenticacion("juan@example.com");
-    }
-
-    @Test
-    @DisplayName("Debe rechazar autenticación con contraseña incorrecta")
-    void testAutenticar_IncorrectPassword() {
-        // ARRANGE
-        when(usuarioRepository.encontrarParaAutenticacion("juan@example.com"))
-                .thenReturn(Optional.of(usuarioMock));
-        when(passwordEncoder.matches("ContraIncorrecta", usuarioMock.getContrasena()))
-                .thenReturn(false);
-
-        // ACT
-        Optional<UsuarioResponseDTO> resultado = usuarioService.autenticar("juan@example.com", "ContraIncorrecta");
-
-        // ASSERT
-        assertFalse(resultado.isPresent());
-    }
-
-    @Test
     @DisplayName("Debe actualizar un usuario existente")
     void testActualizar_Success() {
         // ARRANGE

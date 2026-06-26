@@ -18,6 +18,22 @@ spring:
 server:
     port: 8081
 
+
+# ========== SWAGGER ==========
+springdoc:
+    api-docs:
+        enabled: true
+        path: /api/usuarios/v3/api-docs
+    swagger-ui:
+        enabled: true
+        path: /api/usuarios/swagger-ui.html
+
+    servers:
+        - url: http://localhost:8080
+          description: Servidor a través del Gateway (Pruebas de Seguridad)
+        - url: http://localhost:8081
+          description: Servidor Local Directo (ms-usuarios)
+
 # ========== CONFIGURACIÓN EUREKA ==========
 eureka:
     client:
@@ -49,4 +65,4 @@ logging:
         com.Usuario.GestionUsuarios: DEBUG
         org.springframework.web: DEBUG
         org.springframework.security: DEBUG
-    
+

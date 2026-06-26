@@ -17,7 +17,7 @@ import lombok.NoArgsConstructor;
 )
 public class UsuarioRequestDTO {
 
-    @NotBlank(message = "El nombre no puede estar vacio")
+    @NotBlank(message = "El nombre no puede estar vacío")
     @Size(min = 3, max = 100, message = "El nombre debe tener entre 3 y 100 caracteres")
     @Schema(
             description = "Nombre completo del usuario",
@@ -25,8 +25,9 @@ public class UsuarioRequestDTO {
             requiredMode = Schema.RequiredMode.REQUIRED
     )
     private String nombre;
+
     @Email(message = "El correo debe ser válido")
-    @NotBlank(message = "El correo (gmail) no puede estar vacio ")
+    @NotBlank(message = "El correo (gmail) no puede estar vacío")
     @Schema(
             description = "Correo electrónico único del usuario",
             example = "juan.perez@example.com",
@@ -34,7 +35,7 @@ public class UsuarioRequestDTO {
     )
     private String gmail;
 
-    @NotBlank(message = "El rol del usuario no puede estar vacio.")
+    @NotBlank(message = "El rol del usuario no puede estar vacío")
     @Schema(
             description = "Rol del usuario (ADMINISTRADOR, TECNICO, USUARIO)",
             example = "ADMINISTRADOR",
@@ -42,8 +43,8 @@ public class UsuarioRequestDTO {
     )
     private String rol;
 
-    @Size(min = 8, max = 8, message = "La contraseña solo puede tener 8 caracteres ")
-    @NotBlank(message = "La contraseña del usuario no puede estar vacio." )
+    @NotBlank(message = "La contraseña del usuario no puede estar vacía")
+    @Size(min = 8, max = 8, message = "La contraseña debe tener exactamente 8 caracteres")
     @Schema(
             description = "Contraseña del usuario (será encriptada con BCrypt)",
             example = "MiCont45",

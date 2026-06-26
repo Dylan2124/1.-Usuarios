@@ -68,13 +68,6 @@ public class UsuarioService {
 
     }
 
-    //auntenticar usuario por gmail
-    public Optional<UsuarioResponseDTO> autenticar(String gmail,String contrasena){
-        return usuarioRepository.encontrarParaAutenticacion(gmail)
-                // Comparacion de contraseñas
-                .filter(u ->passwordEncoder.matches(contrasena, u.getContrasena()))
-                .map(this::mapToDTO);
-    }
 
     // Actualizar por id
     public Optional<UsuarioResponseDTO> actualizar(Long id, UsuarioRequestDTO dto) {
